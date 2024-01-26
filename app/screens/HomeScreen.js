@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, Image} from 'react-native';
 import {fetchIPDetails} from '../services/IPService';
 import SearchBar from '../components/SearchBar';
 import Carousel from 'react-native-reanimated-carousel';
+import { s1, s2, s3, s4, s5, s6 } from '../assets/images';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
+const images = [s1,s2,s3,s4,s5,s6];
 const {width} = Dimensions.get('window');
+
 const HomeScreen = ({navigation}) => {
   const [ip, setIp] = useState('');
   const [ipDetails, setIpDetails] = useState(null);
@@ -20,7 +24,7 @@ const HomeScreen = ({navigation}) => {
   };
 
   const handleImageSelect = image => {
-    navigation.navigate('ImageScreen', {image, ipDetails});
+    navigation.navigate('Profile', {image, ipDetails});
   };
 
   return (
@@ -44,7 +48,7 @@ const HomeScreen = ({navigation}) => {
             IP Address
           </Text>
           <Text style={styles.content}>
-            162.158.102.248
+            {ipDetails?.ip}
           </Text>
         </View>
         <View style={styles.ipInfoContent}>
@@ -52,7 +56,7 @@ const HomeScreen = ({navigation}) => {
             Location
           </Text>
           <Text style={styles.content}>
-            162.158.102.248
+            {`${ipDetails?.city} ${ipDetails?.country_code} ${ipDetails?.postal}`}
           </Text>
         </View>
         <View style={styles.ipInfoContent}>
@@ -60,7 +64,7 @@ const HomeScreen = ({navigation}) => {
             Timezone
           </Text>
           <Text style={styles.content}>
-            UTC +01:00
+            {`${ipDetails?.timezone.abbr} ${ipDetails?.timezone.utc}`}
           </Text>
         </View>
         <View style={styles.ipInfoContent}>
@@ -68,7 +72,7 @@ const HomeScreen = ({navigation}) => {
             ISP
           </Text>
           <Text style={styles.content}>
-            Cloudfare, Inc.
+            {ipDetails?.connection?.isp}
           </Text>
         </View>
       </View>
@@ -89,14 +93,13 @@ const HomeScreen = ({navigation}) => {
           renderItem={({ index }) => (
               <View
                   style={{
-                      flex: 1,
-                      borderWidth: 1,
+                      flex: 1,                      
                       justifyContent: 'center',
                   }}
               >
-                  <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                      {index}
-                  </Text>
+                <TouchableOpacity onPress={()=>{handleImageSelect(images[index])}}>
+                  <Image source={images[index]} style={{width:"100%", resizeMode:'stretch'}}/>
+                </TouchableOpacity>
               </View>
           )}
       />
@@ -137,19 +140,22 @@ const styles = StyleSheet.create({
   },
   ipInfoContent: {
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems:'flex-start',
+    flex: 1,
   },
   title: {
     color: 'white',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    width: '100%'
   },
   content: {
     marginTop: 10,
     color:'gray',
     textAlign: 'center',
-    fontSize: 12
+    fontSize: 12,
+    width: '100%'
   },
   carouselContainer: {
     flex: 1,
