@@ -1,9 +1,15 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
+import { IPDetails } from '../Types';
 
-const ImageScreen = ({ route }) => {
-  const { image, ipDetails } = route.params;
-  console.log(ipDetails)
+interface ImageScreenProps {
+  route: RouteProp<{params: {image: ImageSourcePropType, ipDetails: IPDetails}}, 'params'>
+}
+
+const ImageScreen = (props: ImageScreenProps) => {
+  const { image, ipDetails } = props.route.params;
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>

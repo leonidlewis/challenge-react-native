@@ -2,14 +2,21 @@ import React from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Import the icon set
 
-const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
+type SearchBarProps = {
+  clicked: boolean;
+  searchPhrase: string;
+  setSearchPhrase: (text: string) => void; 
+  setClicked: (clicked: boolean) => void;
+}
+
+const SearchBar = (props: SearchBarProps) => {
+  const {clicked, searchPhrase, setSearchPhrase, setClicked} = props;
+
   return (
     <View style={styles.container}>
       <View
         style={
-          clicked
-            ? styles.searchBar__clicked
-            : styles.searchBar__unclicked
+          styles.searchBar
         }
       >
         {/* search Icon */}
@@ -29,25 +36,10 @@ const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
             setClicked(true);
           }}
         />
-        {/* cross Icon, depending on whether the search bar is clicked or not */}
-        {clicked && (
-          <MaterialIcons name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
-              setSearchPhrase("")
-          }}/>
-        )}
+        <MaterialIcons name="chevron-right" size={20} color="black" style={{ padding: 1 }} onPress={() => {
+          setSearchPhrase("")
+        }}/>
       </View>
-      {/* cancel button, depending on whether the search bar is clicked or not */}
-      {clicked && (
-        <View>
-          <Button
-            title="Cancel"
-            onPress={() => {
-              Keyboard.dismiss();
-              setClicked(false);
-            }}
-          ></Button>
-        </View>
-      )}
     </View>
   );
 };
@@ -63,18 +55,10 @@ const styles = StyleSheet.create({
     width: "90%",
 
   },
-  searchBar__unclicked: {
+  searchBar: {
     padding: 10,
     flexDirection: "row",
-    width: "95%",
-    backgroundColor: "#d9dbda",
-    borderRadius: 15,
-    alignItems: "center",
-  },
-  searchBar__clicked: {
-    padding: 10,
-    flexDirection: "row",
-    width: "80%",
+    width: "100%",
     backgroundColor: "#d9dbda",
     borderRadius: 15,
     alignItems: "center",

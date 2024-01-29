@@ -1,17 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Dimensions, StyleSheet, Image} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, Image, ImageSourcePropType} from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 import {fetchIPDetails} from '../services/IPService';
 import SearchBar from '../components/SearchBar';
 import Carousel from 'react-native-reanimated-carousel';
 import { s1, s2, s3, s4, s5, s6 } from '../assets/images';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { IPDetails } from '../Types';
+
+interface HomeScreenProps {
+  navigation: NavigationProp<any, any>;
+}
 
 const images = [s1,s2,s3,s4,s5,s6];
 const {width} = Dimensions.get('window');
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = (props: HomeScreenProps) => {
+  const {navigation} = props;
   const [ip, setIp] = useState('');
-  const [ipDetails, setIpDetails] = useState(null);
+  const [ipDetails, setIpDetails] = useState<IPDetails | null>(null);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
 
@@ -23,7 +30,7 @@ const HomeScreen = ({navigation}) => {
     fetchIPDetails(ip).then(data => setIpDetails(data));
   };
 
-  const handleImageSelect = image => {
+  const handleImageSelect = (image: ImageSourcePropType) => {
     navigation.navigate('Profile', {image, ipDetails});
   };
 
@@ -89,7 +96,6 @@ const HomeScreen = ({navigation}) => {
             parallaxScrollingScale: 0.9,
             parallaxScrollingOffset: 50,
           }}
-          onSnapToItem={(index) => console.log('current index:', index)}
           renderItem={({ index }) => (
               <View
                   style={{

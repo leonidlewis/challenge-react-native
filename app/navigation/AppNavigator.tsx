@@ -1,13 +1,12 @@
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import ImageScreen from '../screens/ImageScreen';
 import MarketScreen from '../screens/MarketScreen';
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 export default function AppNavigator() {
+  const Tab = createBottomTabNavigator();
+
   return (
     <NavigationContainer>
       <Tab.Navigator>
